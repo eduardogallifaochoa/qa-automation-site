@@ -94,10 +94,18 @@ jobs:
 
       - name: Run Playwright tests with HTML report
         run: |
-          pytest tests/ --html=report.html --self-contained-html
+          pytest tests/ --html=report.html --self-contained-html --cov=backend --cov-report=xml
 
       - name: Upload HTML test report
         uses: actions/upload-artifact@v4
         with:
           name: playwright-test-report
           path: report.html
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}  # Make sure this secret is set in your repo settings
+          slug: eduardogallifaochoa/qa-automation-site
+          files: ./coverage.xml
+          fail_ci_if_error: true
