@@ -1,6 +1,6 @@
 # 🧪 QA Practice Site (Frontend + Backend + Automation)
 
-![CI](https://github.com/eduardogallifaochoa/qa-automation-site/actions/workflows/test.yml/badge.svg)
+[![CI](https://github.com/eduardogallifaochoa/qa-automation-site/actions/workflows/test.yml/badge.svg)](https://github.com/eduardogallifaochoa/qa-automation-site/actions/runs/16640021950/job/47088502592)
 ![Pytest](https://img.shields.io/badge/Pytest-passing-brightgreen)
 ![Playwright](https://img.shields.io/badge/Playwright-tested-blue)
 ![Python](https://img.shields.io/badge/python-3.13.5-blue)
