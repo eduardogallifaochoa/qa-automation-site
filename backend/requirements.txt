@@ -1,4 +1,9 @@
 fastapi
 uvicorn
 pydantic[email]
-
+pytest
+pytest-playwright
+pytest-html
+httpx
+playwright
+pytest-cov
