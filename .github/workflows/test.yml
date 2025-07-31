@@ -14,44 +14,19 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Set up Python 3.10
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-
-      - name: Cache Python dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-
-      - name: Cache Playwright browsers
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-playwright-
-
-      - name: Install browser dependencies
+      # Install Docker and Docker Compose so we can run containers
+      - name: Set up Docker and Docker Compose
         run: |
           sudo apt-get update
-          sudo apt-get install -y \
-            libnspr4 libnss3 libatk1.0-0 libatk-bridge2.0-0 libatspi2.0-0 \
-            libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libgbm1 libxkbcommon0 libasound2
+          sudo apt-get install -y docker.io docker-compose
+          docker --version
+          docker-compose --version
 
-      - name: Upgrade pip and install Python dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r backend/requirements.txt
-          pip install pytest-playwright pytest-html
-          playwright install
-
+      # Start the backend and frontend services using docker-compose
       - name: Start docker-compose services
         run: docker-compose up -d
 
+      # Wait for the frontend service to be ready on localhost:8080
       - name: Wait for frontend to be ready
         run: |
           for i in {1..10}; do
@@ -64,14 +39,54 @@ jobs:
             fi
           done
 
-      - name: Run Playwright tests with HTML report
-        run: pytest tests/ --html=report.html --self-contained-html
+      # Setup Python 3.10 for tests
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
 
+      # Cache Python dependencies to speed up builds
+      - name: Cache Python dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      # Cache Playwright browsers to avoid reinstalling
+      - name: Cache Playwright browsers
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
+
+      # Install required libraries for Playwright browsers
+      - name: Install browser dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libnspr4 libnss3 libatk1.0-0 libatk-bridge2.0-0 libatspi2.0-0 \
+            libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libgbm1 libxkbcommon0 libasound2t64
+
+      # Upgrade pip and install Python requirements + Playwright tools
+      - name: Upgrade pip and install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r backend/requirements.txt
+          pip install pytest-playwright pytest-html
+          playwright install
+
+      # Run the Playwright tests and generate HTML report
+      - name: Run Playwright tests with HTML report
+        run: |
+          pytest tests/ --html=report.html --self-contained-html
+
+      # Upload the HTML report as artifact to see results after run
       - name: Upload HTML test report
         uses: actions/upload-artifact@v4
         with:
           name: playwright-test-report
           path: report.html
-
-      - name: Shut down docker-compose services
-        run: docker-compose down
