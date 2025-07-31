@@ -61,8 +61,8 @@ You can plug this same test structure into bigger systems:
 
 Check out the latest test results and coverage reports generated automatically from our CI/CD pipeline. Feel free to download and review them!
 
-- [Playwright Test Report (HTML)](https://github.com/eduardogallifaochoa/qa-automation-site/suites/latest/artifacts)  
-  _Detailed test run report with all test cases and screenshots_
+- [Latest Test Reports](https://github.com/eduardogallifaochoa/qa-automation-site/actions)  
+  _Go to the Actions tab, select the latest workflow run, and download the test report artifacts._
 
 - [Code Coverage Report](https://codecov.io/gh/eduardogallifaochoa/qa-automation-site)  
   _Comprehensive code coverage overview with detailed metrics_
