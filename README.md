@@ -57,6 +57,27 @@ You can plug this same test structure into bigger systems:
 - Point the backend to a real API (REST/GraphQL).
 - Add **load testing**, **API mocking**, or even **visual regression** with tools like Percy or Playwright snapshots.
 
+## Downloadables
+
+Check out the latest test results and coverage reports generated automatically from our CI/CD pipeline. Feel free to download and review them!
+
+- [Playwright Test Report (HTML)](https://github.com/eduardogallifaochoa/qa-automation-site/suites/latest/artifacts)  
+  _Detailed test run report with all test cases and screenshots_
+
+- [Code Coverage Report](https://codecov.io/gh/eduardogallifaochoa/qa-automation-site)  
+  _Comprehensive code coverage overview with detailed metrics_
+
+- [Docker Compose Setup](./docker-compose.yml)  
+  _Bring up the entire app stack locally using Docker Compose_
+
+- [Source Code](./)  
+  _Full project source code for manual review or contribution_
+
+---
+
+> **Note:** These files and reports are updated automatically on every push to the `main` branch via GitHub Actions CI/CD pipeline.
+
+
 ## 🖼️ Frontend
 
 Three simple HTML pages:
