@@ -1,0 +1,21 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+.venv/
+venv/
+ENV/
+
+# Playwright stuff
+playwright-report/
+
+# Pytest HTML report
+report.html
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# VSCode
+.vscode/
