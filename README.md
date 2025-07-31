@@ -1,5 +1,12 @@
 # 🧪 QA Practice Site (Frontend + Backend + Automation)
 
+![CI](https://github.com/eduardogallifaochoa/qa-automation-site/actions/workflows/ci.yml/badge.svg)
+![Pytest](https://img.shields.io/badge/Pytest-passing-brightgreen)
+![Playwright](https://img.shields.io/badge/Playwright-tested-blue)
+![Python](https://img.shields.io/badge/python-3.13.5-blue)
+[![codecov](https://codecov.io/gh/eduardogallifaochoa/qa-automation-site/branch/main/graph/badge.svg?token=YOUR_CODECOV_TOKEN)](https://codecov.io/gh/eduardogallifaochoa/qa-automation-site)
+
+
 A full QA-friendly project including:
 
 - Static **Frontend** (HTML/CSS/JS)
