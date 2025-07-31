@@ -1,4 +1,4 @@
-name: 🧪 QA Playwright Test Suite
+name: QA Playwright Test Suite
 
 on:
   push:
@@ -40,21 +40,38 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y \
             libnspr4 libnss3 libatk1.0-0 libatk-bridge2.0-0 libatspi2.0-0 \
-            libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libgbm1 libxkbcommon0 libasound2t64
+            libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libgbm1 libxkbcommon0 libasound2
 
-      - name: Upgrade pip and install project dependencies
+      - name: Upgrade pip and install Python dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r backend/requirements.txt
           pip install pytest-playwright pytest-html
           playwright install
 
-      - name: Run Playwright tests with report
+      - name: Start docker-compose services
+        run: docker-compose up -d
+
+      - name: Wait for frontend to be ready
         run: |
-          pytest tests/ --html=report.html --self-contained-html
+          for i in {1..10}; do
+            if curl -s http://localhost:8080 > /dev/null; then
+              echo "Frontend is up!"
+              break
+            else
+              echo "Waiting for frontend..."
+              sleep 5
+            fi
+          done
+
+      - name: Run Playwright tests with HTML report
+        run: pytest tests/ --html=report.html --self-contained-html
 
       - name: Upload HTML test report
         uses: actions/upload-artifact@v4
         with:
           name: playwright-test-report
           path: report.html
+
+      - name: Shut down docker-compose services
+        run: docker-compose down
