@@ -54,7 +54,7 @@ jobs:
           pytest tests/ --html=report.html --self-contained-html
 
       - name: Upload HTML test report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: playwright-test-report
           path: report.html
