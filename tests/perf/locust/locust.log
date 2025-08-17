@@ -1,0 +1,4 @@
+[2025-08-16 21:41:13,638] EddiePC/INFO/locust.main: Starting Locust 2.38.1
+[2025-08-16 21:41:13,658] EddiePC/INFO/locust.main: Run time limit set to 180 seconds
+[2025-08-16 21:41:13,660] EddiePC/INFO/locust.runners: Ramping to 50 users at a rate of 10.00 per second
+[2025-08-16 21:41:17,705] EddiePC/INFO/locust.runners: All users spawned: {"QaUser": 50} (50 total users)

@@ -1,0 +1,51 @@
+name: API fuzz (Schemathesis)
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  fuzz:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install deps
+        run: |
+          python -m pip install -U pip
+          pip install -r requirements.txt -r requirements-dev.txt
+
+      - name: Start API (background)
+        env:
+          PYTHONUTF8: "1"
+          PYTHONIOENCODING: "utf-8"
+        run: |
+          uvicorn app.main:app --host 127.0.0.1 --port 8000 &
+          # wait for port
+          for i in {1..30}; do
+            curl -fsS http://127.0.0.1:8000/openapi.json && break
+            sleep 1
+          done
+
+      - name: Schemathesis CLI
+        env:
+          PYTHONUTF8: "1"
+          PYTHONIOENCODING: "utf-8"
+        run: |
+          schemathesis run http://127.0.0.1:8000/openapi.json \
+            --url http://127.0.0.1:8000 --checks all --max-examples 10
+
+      - name: Pytest wrapper
+        env:
+          PYTHONUTF8: "1"
+          PYTHONIOENCODING: "utf-8"
+          OPENAPI_URL: "http://127.0.0.1:8000/openapi.json"
+          BASE_URL: "http://127.0.0.1:8000"
+          FUZZ_EXAMPLES: "10"
+        run: pytest -q tests/fuzz/test_openapi.py
