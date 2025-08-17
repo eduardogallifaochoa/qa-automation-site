@@ -1,11 +1,9 @@
-# tests/test_login.py
-
+import os
 import pytest
 import logging
 
 # Test data for login form
 login_data = [
-    # (username, password, description)
     ("admin", "1234", "Valid admin credentials"),
     ("testuser", "password123", "Valid testuser credentials"),
     ("admin", "wrongpass", "Wrong password"),
@@ -25,13 +23,15 @@ login_data = [
     ("user", "pass\t", "Password with tab"),
 ]
 
+FRONTEND = os.getenv("FRONTEND_URL", "http://127.0.0.1:8080")
+
 @pytest.mark.parametrize(
     "username,password",
-    [ (u, p) for u, p, _ in login_data ],
-    ids=[desc for _, _, desc in login_data]
+    [(u, p) for u, p, _ in login_data],
+    ids=[desc for _, _, desc in login_data],
 )
 def test_login_cases(page, username, password):
-    page.goto("http://localhost:8080/login.html")
+    page.goto(f"{FRONTEND}/login.html")
     page.fill("#username", username)
     page.fill("#password", password)
     logging.info(f"Tested with username='{username}' and password='{password}'")
