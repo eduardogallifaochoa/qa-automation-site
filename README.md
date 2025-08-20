@@ -1,189 +1,269 @@
-# 🧪 QA Practice Site (Frontend + Backend + Automation)
+# 🧪 QA Automation Site — Frontend + FastAPI + CI/CD
 
-[![CI](https://github.com/eduardogallifaochoa/qa-automation-site/actions/workflows/test.yml/badge.svg)](https://github.com/eduardogallifaochoa/qa-automation-site/actions/runs/16640021950/job/47088502592)
-![Pytest](https://img.shields.io/badge/Pytest-passing-brightgreen)
+[![Tests](https://github.com/eduardogallifaochoa/qa-automation-site/actions/workflows/test.yml/badge.svg)](https://github.com/eduardogallifaochoa/qa-automation-site/actions/workflows/test.yml)
 ![Playwright](https://img.shields.io/badge/Playwright-tested-blue)
-![Python](https://img.shields.io/badge/python-3.13.5-blue)
+![Pytest](https://img.shields.io/badge/Pytest-passing-brightgreen)
+![Python](https://img.shields.io/badge/python-3.13-blue)
 [![codecov](https://codecov.io/gh/eduardogallifaochoa/qa-automation-site/branch/main/graph/badge.svg?token=YOUR_CODECOV_TOKEN)](https://codecov.io/gh/eduardogallifaochoa/qa-automation-site)
 
+A realistic QA practice project that mirrors production setups:
 
-A full QA-friendly project including:
-
-- Static **Frontend** (HTML/CSS/JS)
-- FastAPI **Backend** with validation
-- **Playwright + Pytest** test suite
-- **Docker Compose** for orchestration
-
-Perfect for practicing UI, API, and E2E automation.
-
-## 🚀 Why This Project Matters (Real-World QA Showcase)
-
-This project isn't just a simple demo — it's a **miniature version of what a real QA Engineer would work with** in a professional environment. It simulates a full QA workflow found in companies like **AT&T, IBM, or Mercado Libre**, where **automation, API testing, and CI/CD integration** are must-have skills.
-
-### 🔧 What this project demonstrates:
-
-✅ **Real-world automation testing**:  
-Covers login and contact flows with realistic test cases, including **edge cases, security checks, and UI validations**.
-
-✅ **CI/CD Integration**:  
-Automatically runs tests on every push to `main` using **GitHub Actions** and uploads a full **HTML test report**, just like in enterprise pipelines.
-
-✅ **Frontend + Backend architecture**:  
-Uses **Docker Compose** to simulate a real-life scenario: static frontend served with Nginx + backend API using **FastAPI** — exactly how many modern platforms are built.
-
-✅ **Scalable test structure**:  
-Separates tests cleanly with Playwright fixtures, reusable config, and parametric data — making it easy to scale up for future projects or add new features.
-
-✅ **End-to-end coverage**:  
-From UI interaction to backend validation, every flow is tested **as a user would experience it**.
+- Static **frontend** (HTML/CSS/JS) with Login & Contact flows  
+- **FastAPI** backend with validation and OpenAPI (3.1)  
+- Test suite: **Playwright** (UI), **Pytest** (API), **Schemathesis** (OpenAPI fuzz)  
+- **Docker Compose** orchestration + **GitHub Actions** CI
 
 ---
 
-### 🌍 Example Use in Enterprise QA
+## ⚙️ Architecture & URLs
 
-Let’s say you’re working for **AT&T** on their customer portal:
-
-- You’d test the **login** form with valid/invalid credentials, same as here.
-- The **contact form** would be a support request or service report — tested with long messages, empty fields, etc.
-- These tests would be integrated into the CI/CD pipeline — **failures would block deployment**.
-- Reports like `report.html` would be attached to **QA dashboards or Jira tickets**, exactly like you're doing here.
-
----
-
-### 💡 Final Notes
-
-You can plug this same test structure into bigger systems:
-- Swap the frontend with React, Angular, or Vue.
-- Point the backend to a real API (REST/GraphQL).
-- Add **load testing**, **API mocking**, or even **visual regression** with tools like Percy or Playwright snapshots.
-
-## Downloadables
-
-Check out the latest test results and coverage reports generated automatically from our CI/CD pipeline. Feel free to download and review them!
-
-- [Latest Test Reports](https://github.com/eduardogallifaochoa/qa-automation-site/actions)  
-  _Go to the Actions tab, select the latest workflow run, and download the test report artifacts._
-
-- [Code Coverage Report](https://codecov.io/gh/eduardogallifaochoa/qa-automation-site)  
-  _Comprehensive code coverage overview with detailed metrics_
-
-- [Docker Compose Setup](./docker-compose.yml)  
-  _Bring up the entire app stack locally using Docker Compose_
-
-- [Source Code](./)  
-  _Full project source code for manual review or contribution_
+- **Frontend**: static pages served by Nginx  
+  - `http://localhost:8080/` (index)  
+  - `http://localhost:8080/login.html`  
+  - `http://localhost:8080/contact.html`
+- **Backend**: FastAPI app  
+  - `http://localhost:8000/` (health)  
+  - `http://localhost:8000/docs` (Swagger UI)  
+  - `http://localhost:8000/openapi.json` (OpenAPI)  
+  - `POST /api/login` & `POST /api/contact`
 
 ---
 
-> **Note:** These files and reports are updated automatically on every push to the `main` branch via GitHub Actions CI/CD pipeline.
+## 🚀 Quick Start (Docker)
 
-
-## 🖼️ Frontend
-
-Three simple HTML pages:
-- `index.html` — Landing page
-- `login.html` — Auth form → POST `/api/login`
-- `contact.html` — Contact form → POST `/api/contact`
-
-Forms use `fetch()` to send JSON to the backend.
-
-📍 Served via Nginx at: [http://localhost:8080](http://localhost:8080)
-
-## ⚙️ Backend (FastAPI)
-
-Endpoints:
-- `POST /api/login` — Hardcoded user check
-- `POST /api/contact` — Validated message input
-
-📍 Docs: [http://localhost:8000/docs](http://localhost:8000/docs)
-
-✅ CORS enabled  
-✅ Pydantic validation  
-✅ Runs via Docker or manually with:
 ```bash
-cd backend
+# Start everything
+docker compose up -d --build
+
+# Stop
+docker compose down
+```
+Open:
+
+Frontend → ```http://localhost:8080```
+
+Backend docs → ```http://localhost:8000/docs```
+
+## 🧑‍💻 Quick Start (Manual Dev)
+
+Backend:
+```bash
+# In repo root (or cd backend if you prefer)
+python -m venv .venv
+# Windows PowerShell
+. .\.venv\Scripts\Activate.ps1
+# macOS/Linux
+# source .venv/bin/activate
+
 pip install -r requirements.txt
-uvicorn app:app --reload --port 8000
+uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
 ```
-
----
-
-## 🐳 Docker Compose
-
-Orchestration for frontend + backend.
-
+Frontend (serve static files locally):
 ```bash
-version: '3.8'
-services:
-  backend:
-    build: ./backend
-    ports:
-      - "8000:8000"
-  frontend:
-    image: nginx:alpine
-    volumes:
-      - ./frontend:/usr/share/nginx/html
-    ports:
-      - "8080:80"
+cd frontend
+# Simple Python HTTP server
+python -m http.server 8080
+# Now open http://localhost:8080
 ```
-▶ Run both with:
-```docker-compose up --build```
-
-## 🧪 Tests (Playwright + Pytest)
-
-Covers:
-- Login form inputs (positive & negative)
-- Contact form validation (including security & edge cases)
-
-🛠️ Setup:
+## ✅ Running Tests Locally
+### 1) UI (Playwright)
 ```bash
 pip install -r requirements.txt
 playwright install
+pytest tests/ --html=report.html --self-contained-html
 ```
+Flags you make like:
+- ```--headed --browser=chromium``` to see the browser
+- ```-k "login or contact"``` to filter tests
 
-▶ Run tests (headless):
+### 2) API (Pytest)
 ```bash
-pytest tests/
+pytest -q tests/api/test_endpoints.py
 ```
+### 3) OpenAPI Fuzz (Schemathesis)
 
-▶ Or see browser in action:
+CLI:
 ```bash
-pytest tests/ --headed --browser=chromium
+schemathesis run http://127.0.0.1:8000/openapi.json \
+  --url http://127.0.0.1:8000 \
+  --checks all \
+  --max-examples 10
+```
+Pytest wrapper (uses the CLI under the hood):
+```bash
+# Optional (but handy) env vars
+$env:OPENAPI_URL="http://127.0.0.1:8000/openapi.json"   # PowerShell
+$env:BASE_URL="http://127.0.0.1:8000"
+$env:FUZZ_EXAMPLES="10"
+pytest -q tests/fuzz/test_openapi.py
 ```
 
-📍 Targets frontend at `http://localhost:8080`  
-Backend must be running.
+---
 
-📄 Generates `report.html` automatically.
+## 🤖 CI/CD (GitHub Actions)
 
-## 🗂️ Structure
+There are two key workflows:
+
+1) **`test.yml` (UI + API + Compose)**
+- Builds/starts the stack with `docker compose`
+- Waits for the frontend to be ready
+- Installs Python deps & Playwright browsers
+- Runs Playwright + Pytest suite
+- Uploads `report.html` artifact
+- Publishes coverage to Codecov
+
+2) **`fuzz.yml` (Schemathesis)**
+- Installs Python deps
+- Boots the FastAPI app (Uvicorn) in background
+- Runs `schemathesis run ... --url ... --checks all --max-examples 10`
+- Runs the Pytest wrapper `tests/fuzz/test_openapi.py`
+
+> **Codecov:** set `CODECOV_TOKEN` in repo secrets if you want upload to succeed.
+
+
+## 🗂️ Project Structure
+```markdown
+.
+├─ .github/workflows/
+│  ├─ test.yml          # UI CI (Playwright) + Docker Compose → uses backend/
+│  └─ fuzz.yml          # Fuzz CI (Schemathesis) → uses app/
+├─ app/                 # Minimal FastAPI app (uvicorn app.main:app)
+├─ backend/             # Original backend used by docker-compose.yml
+├─ frontend/            # Static HTML (index/login/contact)
+├─ tests/
+│  ├─ api/              # API tests with TestClient → import app.main
+│  ├─ fuzz/             # Schemathesis CLI wrapper
+│  └─ visual/           # Playwright UI tests → target the frontend (8080)
+├─ docker-compose.yml   # Starts backend/ + nginx for frontend/
+├─ requirements.txt         # General dependencies (app + tests)
+├─ requirements-dev.txt     # Dev extras (includes Windows-only stuff like pywin32)
+├─ requirements-fuzz.txt    # Optional if you separate fuzz deps
+├─ pytest.ini
+└─ (local artifacts to ignore: .venv, .ruff_cache, .hypothesis, report.html, zap.out)
 ```
-qa-practice-site/
-├── .github/
-│   └── workflows/
-│       └── test.yml         # GitHub Actions workflow (CI/CD)
-├── backend/
-│   ├── app.py
-│   ├── Dockerfile
-│   └── requirements.txt
-├── frontend/                # Static HTML/CSS/JS site
-├── tests/
-│   ├── test_contact.py
-│   ├── test_login.py
-│   └── conftest.py
-├── docker-compose.yml
-├── playwright.config.json
-├── pytest.ini
-├── README.md
-└── report.html
+
+
+---
+
+## 🧹 Lint & Security Checks
+```bash
+# Ruff (lint/format)
+ruff check . --fix
+
+# Bandit (security static analysis)
+bandit -r app -ll
+
+# pip-audit (dependency vulnerabilities)
+pip-audit -r requirements.txt
 ```
 
-## 📬 Contact
+---
 
-If you're interested in collaborating, have feedback, or just want to geek out about QA automation, feel free to reach out:
+## 🪟 Windows Tips
+If you see a UnicodeEncodeError when running Schemathesis CLI (especially due to the console codepage), force UTF-8 for the session:
+```powershell
+# PowerShell
+$env:PYTHONIOENCODING="utf-8"
+$env:PYTHONUTF8="1"
+schemathesis run http://127.0.0.1:8000/openapi.json --url http://127.0.0.1:8000 --checks all --max-examples 10
+```
+
+---
+
+
+## 🧰 Troubleshooting
+
+### Schemathesis CLI flag differences (v4.x)
+Use ```--url``` instead of ```--base-url```.
+Example:
+```schemathesis run <openapi> --url http://127.0.0.1:8000 --checks all --max-examples 10```
+
+### “from_uri / loaders / load” import errors
+Use the CLI or the newer API surface. The test wrapper calls the CLI to avoid import churn across versions.
+
+### OpenAPI 3.1
+Schemathesis v4 handles loading 3.1 but may skip “Examples” phase. Coverage & fuzzing still run.
+
+### Playwright missing browsers
+Run ```playwright install``` at least once in your environment.
+
+### Docker Compose not ready yet
+CI waits with a curl loop. Locally, ensure http://localhost:8080 and http://localhost:8000/openapi.json respond before launching tests.
+
+---
+
+## 📥 Artifacts & Reports
+
+- **HTML test report:** `report.html` (uploaded by CI; downloadable from the Actions run)
+- **Coverage:** uploaded to **Codecov** (requires secret)
+- **Schemathesis:** full CLI output in the job logs
+
+## 🧭 Roadmap Ideas
+
+- Visual regression (Playwright snapshots / Percy)
+- Load testing (Locust) against `/api/*`
+- Contract tests pinned to OpenAPI examples
+- Dockerized Playwright service for parallel UI runs
+
+## 🎯 Showcase
+
+This project demonstrates a broad, job-ready QA automation skillset across UI, API, CI/CD, and tooling:
+
+### Full-stack testing in one repo
+- **Frontend + Backend + Tests** together: static site (Nginx) + FastAPI service + Playwright/Pytest suites.
+- **Docker Compose** orchestrates the stack locally just like a real system.
+
+### API design & correctness
+- **FastAPI** app with `pydantic` validation, clean request/response models, and a published **OpenAPI 3.1** spec.
+- **Security headers** & **CORS** configured (e.g., `X-Content-Type-Options`, COOP/COEP/CORP).
+- Healthcheck & sitemap endpoints for basic ops readiness.
+
+### E2E UI automation (Playwright)
+- **Data-driven tests** for login & contact forms (valid/invalid, boundaries, trimming, unicode, long inputs).
+- **Security-minded cases** (XSS/SQLi strings, HTML in inputs, whitespace/newlines).
+- **Headless/headed** runs with fixtures, stable selectors, and structured logs.
+
+### API testing (Pytest + TestClient)
+- **Unit/integration** tests directly against the FastAPI app (no network flakiness).
+- Parametrized cases with clear assertions and descriptive IDs.
+- **HTML reports** and **coverage** output for quick triage & quality metrics.
+
+### Spec-based fuzzing (Schemathesis)
+- CLI-driven **property-based testing** against the OpenAPI spec.
+- Handles the **v4 CLI flags** (`--url` instead of `--base-url`) and OpenAPI 3.1 behavior.
+- **Pytest wrapper** to exercise the CLI end-to-end and capture regressions.
+- Configurable **example budget** (`--max-examples`) for fast/slow builds.
+
+### CI/CD on GitHub Actions
+- **Two pipelines**:
+  - `test.yml`: builds Docker stack, waits for readiness, runs Playwright+Pytest, uploads `report.html`, sends coverage to **Codecov**.
+  - `fuzz.yml`: boots the FastAPI app (uvicorn), runs **Schemathesis** CLI & the Pytest wrapper.
+- **Caching** for pip & Playwright browsers, **UTF-8 env** fixes on Linux/Windows runners.
+- Artifacts searchable in Actions; **coverage badge** ready.
+
+### Quality & security gates
+- **Ruff** for lint/format (fast & strict).
+- **Bandit** for static security analysis.
+- **pip-audit** for dependency CVEs (CycloneDX support included).
+
+### Cross-platform & DevX polish
+- Works on **Windows & Linux**; includes **Unicode** console workarounds for Schemathesis.
+- Deterministic seeds in CLI output; actionable **curl repro** lines from failures.
+- Clean project layout: `tests/api` (TestClient), `tests/visual` (Playwright), `tests/fuzz` (Schemathesis).
+
+### Scale & future-proofing
+- Clear separation of suites enables **parallelization** or selective runs.
+- **Locust** & performance testing hooks available for future load tests.
+- Easy to extend to visual regression (Playwright snapshots/Percy) or contract tests pinned to OpenAPI examples.
+
+> TL;DR — This repo mirrors a real QA pipeline: **spec-driven API testing, UI automation, security checks, CI/CD, reporting, and Dockerized environments**—all production-style.
+
+
+## 💬 Contact
 
 - 📧 Email: eduardogallifao@gmail.com  
 - 🧑‍💻 GitHub: [eduardogallifaochoa](https://github.com/eduardogallifaochoa)  
 - 💼 LinkedIn: [Eduardo Gallifa Ochoa](https://www.linkedin.com/in/eduardogallifaochoa/)
 
-Always open to new challenges and QA opportunities!
+PRs and issues welcome!
+
