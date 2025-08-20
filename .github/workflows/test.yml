@@ -10,6 +10,7 @@ jobs:
     env:
       PYTHONUTF8: "1"
       PYTHONIOENCODING: "utf-8"
+      PYTHONPATH: ${{ github.workspace }}   # Ensures PYTHONPATH to be well defined
       FRONTEND_URL: "http://127.0.0.1:8080"
 
     steps:
@@ -17,7 +18,8 @@ jobs:
 
       - uses: actions/setup-python@v5
         with:
-          # Si prefieres 3.10 como antes, cámbialo a "3.10"
+          # If you want to test with a different Python version, change this
+          # to the desired version, e.g., "3.10", "3.11
           python-version: "3.13"
 
       - name: Install Python deps + Playwright
