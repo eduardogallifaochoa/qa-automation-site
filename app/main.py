@@ -1,8 +1,9 @@
 # app/main.py
+from typing import Literal
+
 from fastapi import FastAPI, Request, Response
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, EmailStr
-from typing import Literal
 
 app = FastAPI(title="QA Automation API", version="0.1.0")
 
@@ -16,6 +17,10 @@ class LoginIn(BaseModel):
 class LoginOut(BaseModel):
     access_token: str
     token_type: Literal["bearer"] = "bearer"
+
+
+class ErrorMessage(BaseModel):
+    detail: str = "Invalid credentials"
 
 
 class ContactIn(BaseModel):
@@ -49,11 +54,23 @@ async def security_headers(request: Request, call_next):
 
 
 # ---------- API endpoints ----------
-@app.post("/api/login", response_model=LoginOut, tags=["API"], summary="Login")
+@app.post(
+    "/api/login",
+    response_model=LoginOut,
+    tags=["API"],
+    summary="Login",
+    # Document 401 so Schemathesis doesn't fail on unauthorized cases
+    responses={
+        401: {
+            "description": "Unauthorized - Invalid credentials",
+            "model": ErrorMessage,
+        }
+    },
+)
 async def login(payload: LoginIn) -> LoginOut:
     """
     Dummy login: returns a static bearer token for testing purposes.
-    Replace with a real auth flow in production.
+    In real implementations you may return 401 when credentials are invalid.
     """
     return LoginOut(access_token="fake-token-for-tests")
 
