@@ -1,4 +1,4 @@
-# 🧪 QA Automation Site (UI + API + CI/CD)
+# 🧪 QA Automation Site | UI + API + CI/CD |
 
 [![Tests](https://github.com/eduardogallifaochoa/qa-automation-site/actions/workflows/test.yml/badge.svg)](https://github.com/eduardogallifaochoa/qa-automation-site/actions/workflows/test.yml)
 ![Playwright](https://img.shields.io/badge/Playwright-tested-blue)
@@ -66,7 +66,7 @@ schemathesis run http://127.0.0.1:8000/openapi.json \
 > Codecov: set CODECOV_TOKEN in GitHub repo secrets.  
 > Replace REPLACE_WITH_CODECOV_TOKEN in the badge URL if you want the badge to reflect your repo token.
 
-## 🗂️ Structure (high level)
+## 🗂️ Structure
 ```text
 frontend/   # Static HTML/CSS/JS
 app/        # Minimal FastAPI app (uvicorn app.main:app)
