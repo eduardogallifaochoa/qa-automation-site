@@ -5,7 +5,7 @@ from fastapi import FastAPI, Request, Response
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, EmailStr
 
-app = FastAPI(title="QA Automation API", version="0.1.0")
+app = FastAPI(title="QA Automation API", version="0.1.0", redirect_slashes=False)
 
 
 # ---------- Models ----------
